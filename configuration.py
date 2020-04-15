@@ -21,3 +21,7 @@ class Config:
     txt_file_dir = "data.txt"
 
     max_boxes_per_image = 20
+
+    # network architecture
+    heads = {"heatmap": num_classes, "wh": 2, "reg": 2}
+    head_conv = {"no_conv_layer": 0, "resnets": 64, "dla": 256}
