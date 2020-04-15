@@ -19,3 +19,5 @@ class Config:
 
     # txt file
     txt_file_dir = "data.txt"
+
+    max_boxes_per_image = 20
