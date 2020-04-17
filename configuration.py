@@ -31,7 +31,7 @@ class Config:
     # network architecture
     heads = {"heatmap": num_classes, "wh": 2, "reg": 2}
     head_conv = {"no_conv_layer": 0, "resnets": 64, "dla": 256}
-    backbone_name = "resnet_50"
+    backbone_name = "resnet_18"
 
     # loss
     hm_weight = 1.0

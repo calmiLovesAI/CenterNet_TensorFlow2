@@ -6,7 +6,6 @@ from configuration import Config
 class BasicBlock(tf.keras.layers.Layer):
     def __init__(self, filter_num, stride=1):
         super(BasicBlock, self).__init__()
-        self.stride = stride
         self.conv1 = tf.keras.layers.Conv2D(filters=filter_num,
                                             kernel_size=(3, 3),
                                             strides=stride,
@@ -19,19 +18,19 @@ class BasicBlock(tf.keras.layers.Layer):
                                             padding="same",
                                             use_bias=False)
         self.bn2 = tf.keras.layers.BatchNormalization()
-        self.downsample = tf.keras.Sequential([
-            tf.keras.layers.Conv2D(filters=filter_num,
-                                   kernel_size=(1, 1),
-                                   strides=stride,
-                                   use_bias=False),
-            tf.keras.layers.BatchNormalization()
-        ])
+        if stride != 1:
+            self.downsample = tf.keras.Sequential([
+                tf.keras.layers.Conv2D(filters=filter_num,
+                                       kernel_size=(1, 1),
+                                       strides=stride,
+                                       use_bias=False),
+                tf.keras.layers.BatchNormalization()
+            ])
+        else:
+            self.downsample = tf.keras.layers.Lambda(lambda x: x)
 
     def call(self, inputs, training=None, **kwargs):
-        if self.stride != 1:
-            residual = self.downsample(inputs)
-        else:
-            residual = inputs
+        residual = self.downsample(inputs, training=training)
         x = self.conv1(inputs)
         x = self.bn1(x, training=training)
         x = tf.nn.relu(x)
@@ -71,7 +70,7 @@ class BottleNeck(tf.keras.layers.Layer):
         ])
 
     def call(self, inputs, training=None, **kwargs):
-        residual = self.downsample(inputs)
+        residual = self.downsample(inputs, training=training)
         x = self.conv1(inputs)
         x = self.bn1(x, training=training)
         x = tf.nn.relu(x)
