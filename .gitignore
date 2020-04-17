@@ -2,5 +2,6 @@
 __pycache__
 /data/datasets/*
 !/data/datasets/README.md
-test.py
 data.txt
+/saved_model/*
+!/saved_model/README.md

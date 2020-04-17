@@ -2,6 +2,7 @@ import tensorflow as tf
 import numpy as np
 
 from configuration import Config
+from utils.gaussian import gaussian_radius, draw_umich_gaussian
 
 
 class DetectionDataset:
@@ -96,3 +97,48 @@ class DataLoader:
         decoded_image = tf.io.decode_image(contents=image_raw, channels=DataLoader.input_image_channels, dtype=tf.dtypes.float32)
         decoded_image = tf.image.resize(images=decoded_image, size=(DataLoader.input_image_height, DataLoader.input_image_width))
         return decoded_image
+
+
+class GT:
+    def __init__(self, batch_labels):
+        self.downsampling_ratio = 4
+        self.features_shape = np.array(Config.image_size, dtype=np.int32) // self.downsampling_ratio
+        self.batch_labels = batch_labels
+        self.batch_size = batch_labels.shape[0]
+
+    def get_gt_values(self):
+        gt_heatmap = np.zeros(shape=(self.batch_size, self.features_shape[0], self.features_shape[1], Config.num_classes), dtype=np.float32)
+        gt_reg = np.zeros(shape=(self.batch_size, Config.max_boxes_per_image, 2), dtype=np.float32)
+        gt_wh = np.zeros(shape=(self.batch_size, Config.max_boxes_per_image, 2), dtype=np.float32)
+        gt_reg_mask = np.zeros(shape=(self.batch_size, Config.max_boxes_per_image), dtype=np.float32)
+        gt_indices = np.zeros(shape=(self.batch_size, Config.max_boxes_per_image), dtype=np.float32)
+        for i, label in enumerate(self.batch_labels):
+            hm, reg, wh, reg_mask, ind = self.__decode_label(label)
+            gt_heatmap[i, :, :, :] = hm
+            gt_reg[i, :, :] = reg
+            gt_wh[i, :, :] = wh
+            gt_reg_mask[i, :] = reg_mask
+            gt_indices[i, :] = ind
+        return gt_heatmap, gt_reg, gt_wh, gt_reg_mask, gt_indices
+
+    def __decode_label(self, label):
+        hm = np.zeros(shape=(self.features_shape[0], self.features_shape[1], Config.num_classes), dtype=np.float32)
+        reg = np.zeros(shape=(Config.max_boxes_per_image, 2), dtype=np.float32)
+        wh = np.zeros(shape=(Config.max_boxes_per_image, 2), dtype=np.float32)
+        reg_mask = np.zeros(shape=(Config.max_boxes_per_image), dtype=np.float32)
+        ind = np.zeros(shape=(Config.max_boxes_per_image), dtype=np.float32)
+        for j, item in enumerate(label):
+            item[:4] = item[:4] / self.downsampling_ratio
+            xmin, ymin, xmax, ymax, class_id = item
+            h, w = int(ymax - ymin), int(xmax - xmin)
+            radius = gaussian_radius((h, w))
+            radius = max(0, int(radius))
+            ctr_x, ctr_y = (xmin + xmax) / 2, (ymin + ymax) / 2
+            center_point = np.array([ctr_x, ctr_y], dtype=np.float32)
+            center_point_int = center_point.astype(np.int32)
+            # draw_umich_gaussian(hm[:, :, class_id], center_point_int, radius)
+            reg[j] = center_point - center_point_int
+            wh[j] = 1. * w, 1. * h
+            reg_mask[j] = 1
+            ind[j] = center_point_int[1] * self.features_shape[1] + center_point_int[0]
+        return hm, reg, wh, reg_mask, ind

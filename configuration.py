@@ -2,8 +2,13 @@
 class Config:
     epochs = 50
     batch_size = 8
+    learning_rate_decay_epochs = 10
 
-    image_size = (224, 224)
+    # save model
+    save_frequency = 5
+    save_model_dir = "saved_model/"
+
+    image_size = (384, 384)
     image_channels = 3
 
     # dataset
@@ -11,17 +16,24 @@ class Config:
     pascal_voc_root = "./data/datasets/VOCdevkit/VOC2012/"
     pascal_voc_images = pascal_voc_root + "JPEGImages"
     pascal_voc_labels = pascal_voc_root + "Annotations"
-    pascal_voc_classes = {"person": 0, "bird": 1, "cat": 2, "cow": 3, "dog": 4,
-                          "horse": 5, "sheep": 6, "aeroplane": 7, "bicycle": 8,
-                          "boat": 9, "bus": 10, "car": 11, "motorbike": 12,
-                          "train": 13, "bottle": 14, "chair": 15, "diningtable": 16,
-                          "pottedplant": 17, "sofa": 18, "tvmonitor": 19}
+    # '0' for background
+    pascal_voc_classes = {"person": 1, "bird": 2, "cat": 3, "cow": 4, "dog": 5,
+                          "horse": 6, "sheep": 7, "aeroplane": 8, "bicycle": 9,
+                          "boat": 10, "bus": 11, "car": 12, "motorbike": 13,
+                          "train": 14, "bottle": 15, "chair": 16, "diningtable": 17,
+                          "pottedplant": 18, "sofa": 19, "tvmonitor": 20}
 
     # txt file
     txt_file_dir = "data.txt"
 
-    max_boxes_per_image = 20
+    max_boxes_per_image = 50
 
     # network architecture
     heads = {"heatmap": num_classes, "wh": 2, "reg": 2}
     head_conv = {"no_conv_layer": 0, "resnets": 64, "dla": 256}
+    backbone_name = "resnet_50"
+
+    # loss
+    hm_weight = 1.0
+    wh_weight = 0.1
+    off_weight = 1.0

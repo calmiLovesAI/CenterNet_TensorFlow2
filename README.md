@@ -4,6 +4,7 @@ A tensorflow2.x implementation of CenterNet.
 
 ## Acknowledgments
 1. Official PyTorch implementation of CenterNet: https://github.com/xingyizhou/CenterNet
+2. A TensorFlow implementation of CenterNet: https://github.com/MioChiu/TF_CenterNet
 
 
 ## References

@@ -131,8 +131,8 @@ class ResNetTypeI(tf.keras.Model):
             ])
         else:
             self.heatmap_layer = tf.keras.layers.Conv2D(filters=heads["heatmap"], kernel_size=(1, 1), strides=1, padding="same")
-            self.reg_layer = tf.keras.layers.Conv2D(filters=heads["heatmap"], kernel_size=(1, 1), strides=1, padding="same")
-            self.wh_layer = tf.keras.layers.Conv2D(filters=heads["heatmap"], kernel_size=(1, 1), strides=1, padding="same")
+            self.reg_layer = tf.keras.layers.Conv2D(filters=heads["reg"], kernel_size=(1, 1), strides=1, padding="same")
+            self.wh_layer = tf.keras.layers.Conv2D(filters=heads["wh"], kernel_size=(1, 1), strides=1, padding="same")
 
     @staticmethod
     def __make_basic_block_layer(filter_num, blocks, stride=1):
@@ -221,8 +221,8 @@ class ResNetTypeII(tf.keras.Model):
             ])
         else:
             self.heatmap_layer = tf.keras.layers.Conv2D(filters=heads["heatmap"], kernel_size=(1, 1), strides=1, padding="same")
-            self.reg_layer = tf.keras.layers.Conv2D(filters=heads["heatmap"], kernel_size=(1, 1), strides=1, padding="same")
-            self.wh_layer = tf.keras.layers.Conv2D(filters=heads["heatmap"], kernel_size=(1, 1), strides=1, padding="same")
+            self.reg_layer = tf.keras.layers.Conv2D(filters=heads["reg"], kernel_size=(1, 1), strides=1, padding="same")
+            self.wh_layer = tf.keras.layers.Conv2D(filters=heads["wh"], kernel_size=(1, 1), strides=1, padding="same")
 
     @staticmethod
     def __make_bottleneck_layer(filter_num, blocks, stride=1):
