@@ -113,6 +113,7 @@ class GT:
         gt_reg_mask = np.zeros(shape=(self.batch_size, Config.max_boxes_per_image), dtype=np.float32)
         gt_indices = np.zeros(shape=(self.batch_size, Config.max_boxes_per_image), dtype=np.float32)
         for i, label in enumerate(self.batch_labels):
+            label = label[label[:, 4] != -1]
             hm, reg, wh, reg_mask, ind = self.__decode_label(label)
             gt_heatmap[i, :, :, :] = hm
             gt_reg[i, :, :] = reg
