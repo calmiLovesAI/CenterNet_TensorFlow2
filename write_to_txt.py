@@ -4,7 +4,7 @@ from configuration import Config
 
 if __name__ == '__main__':
     voc_dataset = VOC()
-    with open(file=Config.txt_file_dir, mode="a+") as f:
+    with open(file=Config.txt_file_dir, mode="a+", encoding="utf-8") as f:
         for i, sample in enumerate(voc_dataset):
             num_bboxes = len(sample["bboxes"])
             line_text = sample["image_file_dir"] + " " + str(sample["image_height"]) + " " + str(sample["image_width"]) + " "
