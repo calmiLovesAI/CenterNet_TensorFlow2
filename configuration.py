@@ -7,6 +7,14 @@ class Config:
     # save model
     save_frequency = 5
     save_model_dir = "saved_model/"
+    load_weights_before_training = False
+    load_weights_from_epoch = 0
+
+    # test image
+    test_single_image_dir = "./test_pictures/2007_000032.jpg"
+    test_images_during_training = False
+    training_results_save_dir = "./test_pictures/"
+    test_images_dir_list = ["", ""]
 
     image_size = (384, 384)
     image_channels = 3
@@ -29,6 +37,7 @@ class Config:
     max_boxes_per_image = 50
 
     # network architecture
+    downsampling_ratio = 4
     heads = {"heatmap": num_classes, "wh": 2, "reg": 2}
     head_conv = {"no_conv_layer": 0, "resnets": 64, "dla": 256}
     backbone_name = "resnet_18"
@@ -37,3 +46,5 @@ class Config:
     hm_weight = 1.0
     wh_weight = 0.1
     off_weight = 1.0
+
+    score_threshold = 0.3

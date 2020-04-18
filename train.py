@@ -4,6 +4,7 @@ import time
 from core.centernet import PostProcessing, CenterNet
 from data.dataloader import DetectionDataset, DataLoader
 from configuration import Config
+from utils.visualize import visualize_training_results
 
 
 def print_model_summary(network):
@@ -28,6 +29,12 @@ if __name__ == '__main__':
     # model
     centernet = CenterNet()
     print_model_summary(centernet)
+    load_weights_from_epoch = Config.load_weights_from_epoch
+    if Config.load_weights_before_training:
+        centernet.load_weights(filepath=Config.save_model_dir+"epoch-{}".format(load_weights_from_epoch))
+        print("Successfully load weights!")
+    else:
+        load_weights_from_epoch = -1
 
     # optimizer
     lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(initial_learning_rate=1e-4,
@@ -48,7 +55,7 @@ if __name__ == '__main__':
         optimizer.apply_gradients(grads_and_vars=zip(gradients, centernet.trainable_variables))
         loss_metric.update_state(values=loss_value)
 
-    for epoch in range(Config.epochs):
+    for epoch in range(load_weights_from_epoch + 1, Config.epochs):
         for step, batch_data in enumerate(train_data):
             step_start_time = time.time()
             images, labels = data_loader.read_batch_data(batch_data)
@@ -64,5 +71,8 @@ if __name__ == '__main__':
 
         if epoch % Config.save_frequency == 0:
             centernet.save_weights(filepath=Config.save_model_dir+"epoch-{}".format(epoch), save_format="tf")
+
+        if Config.test_images_during_training:
+            visualize_training_results(pictures=Config.test_images_dir_list, model=centernet, epoch=epoch)
 
     centernet.save_weights(filepath=Config.save_model_dir + "saved_model", save_format="tf")

@@ -101,7 +101,7 @@ class DataLoader:
 
 class GT:
     def __init__(self, batch_labels):
-        self.downsampling_ratio = 4
+        self.downsampling_ratio = Config.downsampling_ratio
         self.features_shape = np.array(Config.image_size, dtype=np.int32) // self.downsampling_ratio
         self.batch_labels = batch_labels
         self.batch_size = batch_labels.shape[0]

@@ -29,14 +29,14 @@ class FocalLoss:
 
 class RegL1Loss:
     def __call__(self, y_true, y_pred, mask, index, *args, **kwargs):
-        y_pred = RegL1Loss.__gather_feat(y_pred, index)
+        y_pred = RegL1Loss.gather_feat(y_pred, index)
         mask = tf.tile(tf.expand_dims(mask, axis=-1), tf.constant([1, 1, 2], dtype=tf.int32))
         loss = tf.math.reduce_sum(tf.abs(y_true * mask - y_pred * mask))
         reg_loss = loss / (tf.math.reduce_sum(mask) + 1e-4)
         return reg_loss
 
     @staticmethod
-    def __gather_feat(feat, idx):
+    def gather_feat(feat, idx):
         feat = tf.reshape(feat, shape=(feat.shape[0], -1, feat.shape[-1]))
         idx = tf.cast(idx, dtype=tf.int32)
         feat = tf.gather(params=feat, indices=idx, batch_dims=1)
