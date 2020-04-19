@@ -9,8 +9,8 @@ A tensorflow2.x implementation of CenterNet.
 
 ## Results
 The following are the detection results of some pictures in the PASCAL VOC 2012 dataset.
-![img_1](https://github.com/calmisential/CenterNet_TensorFlow2/blob/master/assets/1.png)
-![img_2](https://github.com/calmisential/CenterNet_TensorFlow2/blob/master/assets/2.png)
+![img_1](https://github.com/calmisential/CenterNet_TensorFlow2/blob/master/assets/1.png)<br>
+![img_2](https://github.com/calmisential/CenterNet_TensorFlow2/blob/master/assets/2.png)<br>
 ![img_3](https://github.com/calmisential/CenterNet_TensorFlow2/blob/master/assets/3.png)
 
 ## Usage
