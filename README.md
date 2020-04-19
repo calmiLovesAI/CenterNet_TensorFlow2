@@ -7,6 +7,12 @@ A tensorflow2.x implementation of CenterNet.
 + numpy
 + opencv-python
 
+## Results
+The following are the detection results of some pictures in the PASCAL VOC 2012 dataset.
+![img_1](https://github.com/calmisential/CenterNet_TensorFlow2/blob/master/assets/1.png)
+![img_2](https://github.com/calmisential/CenterNet_TensorFlow2/blob/master/assets/2.png)
+![img_3](https://github.com/calmisential/CenterNet_TensorFlow2/blob/master/assets/3.png)
+
 ## Usage
 ### Train on PASCAL VOC 2012
 1. Download the [PASCAL VOC 2012 dataset](http://host.robots.ox.ac.uk/pascal/VOC/).
