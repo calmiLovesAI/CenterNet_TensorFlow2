@@ -52,6 +52,7 @@ class Decoder:
 
     def __call__(self, pred, *args, **kwargs):
         heatmap, reg, wh = tf.split(value=pred, num_or_size_splits=[Config.num_classes, 2, 2], axis=-1)
+        heatmap = tf.math.sigmoid(heatmap)
         batch_size = heatmap.shape[0]
         heatmap = Decoder.__nms(heatmap)
         scores, inds, clses, ys, xs = Decoder.__topK(scores=heatmap, K=self.K)

@@ -131,13 +131,14 @@ class GT:
         for j, item in enumerate(label):
             item[:4] = item[:4] / self.downsampling_ratio
             xmin, ymin, xmax, ymax, class_id = item
+            class_id = class_id.astype(np.int32)
             h, w = int(ymax - ymin), int(xmax - xmin)
             radius = gaussian_radius((h, w))
             radius = max(0, int(radius))
             ctr_x, ctr_y = (xmin + xmax) / 2, (ymin + ymax) / 2
             center_point = np.array([ctr_x, ctr_y], dtype=np.float32)
             center_point_int = center_point.astype(np.int32)
-            # draw_umich_gaussian(hm[:, :, class_id], center_point_int, radius)
+            draw_umich_gaussian(hm[:, :, class_id], center_point_int, radius)
             reg[j] = center_point - center_point_int
             wh[j] = 1. * w, 1. * h
             reg_mask[j] = 1
