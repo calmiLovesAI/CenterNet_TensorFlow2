@@ -1,6 +1,33 @@
 # CenterNet_TensorFlow2
 A tensorflow2.x implementation of CenterNet.
 
+## Requirements:
++ Python >= 3.6
++ TensorFlow == 2.2.0rc3
++ numpy
++ opencv-python
+
+## Usage
+### Train on PASCAL VOC 2012
+1. Download the [PASCAL VOC 2012 dataset](http://host.robots.ox.ac.uk/pascal/VOC/).
+2. Unzip the file and place it in the 'data/datasets' folder, make sure the directory is like this : 
+```
+|——data
+    |——datasets
+        |——VOCdevkit
+            |——VOC2012
+                |——Annotations
+                |——ImageSets
+                |——JPEGImages
+                |——SegmentationClass
+                |——SegmentationObject
+```
+3. Run **write_to_txt.py** to generate **data.txt**.
+4. Run **train.py** to start training, before that, you can change the value of the parameters in **configuration.py**.
+
+### Test on single picture
+1. Change the *test_single_image_dir* in **configuration.py**.
+2. Run **test.py** to test on single picture.
 
 ## Acknowledgments
 1. Official PyTorch implementation of CenterNet: https://github.com/xingyizhou/CenterNet
