@@ -143,7 +143,7 @@ class Tree(tf.keras.layers.Layer):
             self.downsample = tf.keras.layers.MaxPool2D(pool_size=stride, strides=stride, padding="same")
         if in_channels != out_channels:
             self.project = tf.keras.Sequential([
-                tf.keras.layers.Conv2D(filters=out_channels, kernel_size=(1, 10), strides=1, padding="same",
+                tf.keras.layers.Conv2D(filters=out_channels, kernel_size=(1, 1), strides=1, padding="same",
                                        use_bias=False),
                 tf.keras.layers.BatchNormalization()
             ])
@@ -151,7 +151,7 @@ class Tree(tf.keras.layers.Layer):
     def call(self, inputs, training=None, residual=None, children=None, **kwargs):
         children = [] if children is None else children
         bottom = self.downsample(inputs) if self.downsample else inputs
-        residual = self.project(bottom) if self.project else bottom
+        residual = self.project(bottom, training=training) if self.project else bottom
         if self.level_root:
             children.append(bottom)
         x1 = self.tree1(inputs, training=training, residual=residual)
@@ -177,8 +177,8 @@ class DLA(tf.keras.layers.Layer):
             tf.keras.layers.BatchNormalization(),
             tf.keras.layers.ReLU()
         ])
-        self.level_0 = self.__make_conv_level(out_channels=channels[0], convs=levels[0])
-        self.level_1 = self.__make_conv_level(out_channels=channels[1], convs=levels[1], stride=2)
+        self.level_0 = DLA.__make_conv_level(out_channels=channels[0], convs=levels[0])
+        self.level_1 = DLA.__make_conv_level(out_channels=channels[1], convs=levels[1], stride=2)
         self.level_2 = Tree(levels=levels[2], block=block, in_channels=channels[1],
                             out_channels=channels[2], stride=2,
                             level_root=False, root_residual=residual_root)
@@ -196,7 +196,8 @@ class DLA(tf.keras.layers.Layer):
         self.final = tf.keras.layers.Conv2D(filters=num_classes, kernel_size=(1, 1), strides=1,
                                             padding="same", use_bias=True)
 
-    def __make_conv_level(self, out_channels, convs, stride=1):
+    @staticmethod
+    def __make_conv_level(out_channels, convs, stride=1):
         layers = []
         for i in range(convs):
             if i == 0:
@@ -330,7 +331,7 @@ class DLASeg(tf.keras.layers.Layer):
         super(DLASeg, self).__init__()
         self.heads = heads
         self.first_level = int(np.log2(down_ratio))
-        self.base = self.__get_base_block(base_name)
+        self.base = DLASeg.__get_base_block(base_name)
         channels = self.base.channels
         scales = [2 ** i for i in range(len(channels[self.first_level:]))]
         self.dla_up = DLAUp(channels[self.first_level:], scales=scales)
