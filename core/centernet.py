@@ -3,6 +3,7 @@ import numpy as np
 
 from configuration import Config
 from core.models.resnet import resnet_18, resnet_34, resnet_50, resnet_101, resnet_152
+from core.models.dla import dla_34, dla_60, dla_102, dla_169
 from data.dataloader import GT
 from core.loss import CombinedLoss, RegL1Loss
 
@@ -10,7 +11,11 @@ backbone_zoo = {"resnet_18": resnet_18(),
                 "resnet_34": resnet_34(),
                 "resnet_50": resnet_50(),
                 "resnet_101": resnet_101(),
-                "resnet_152": resnet_152()}
+                "resnet_152": resnet_152(),
+                "dla_34": dla_34(),
+                "dla_60": dla_60(),
+                "dla_102": dla_102(),
+                "dla_169": dla_169()}
 
 
 class CenterNet(tf.keras.Model):

@@ -83,7 +83,7 @@ class BottleNeck(tf.keras.layers.Layer):
         return output
 
 
-class ResNetTypeI(tf.keras.Model):
+class ResNetTypeI(tf.keras.layers.Layer):
     def __init__(self, layer_params, heads, head_conv):
         super(ResNetTypeI, self).__init__()
 
@@ -156,7 +156,7 @@ class ResNetTypeI(tf.keras.Model):
             layers.add(tf.keras.layers.ReLU())
         return layers
 
-    def call(self, inputs, training=None, mask=None):
+    def call(self, inputs, training=None, **kwargs):
         x = self.conv1(inputs)
         x = self.bn1(x, training=training)
         x = tf.nn.relu(x)
@@ -174,7 +174,7 @@ class ResNetTypeI(tf.keras.Model):
         return [heatmap, reg, wh]
 
 
-class ResNetTypeII(tf.keras.Model):
+class ResNetTypeII(tf.keras.layers.Layer):
     def __init__(self, layer_params, heads, head_conv):
         super(ResNetTypeII, self).__init__()
         self.conv1 = tf.keras.layers.Conv2D(filters=64,
@@ -246,7 +246,7 @@ class ResNetTypeII(tf.keras.Model):
             layers.add(tf.keras.layers.ReLU())
         return layers
 
-    def call(self, inputs, training=None, mask=None):
+    def call(self, inputs, training=None, **kwargs):
         x = self.conv1(inputs)
         x = self.bn1(x, training=training)
         x = tf.nn.relu(x)

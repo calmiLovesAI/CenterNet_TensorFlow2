@@ -40,7 +40,8 @@ class Config:
     downsampling_ratio = 4
     heads = {"heatmap": num_classes, "wh": 2, "reg": 2}
     head_conv = {"no_conv_layer": 0, "resnets": 64, "dla": 256}
-    backbone_name = "resnet_18"
+    backbone_name = "dla_34"
+    # can be selected from: resnet_18, resnet_34, resnet_50, resnet_101, resnet_152, dla_34, dla_60, dla_102, dla_169
 
     # loss
     hm_weight = 1.0
