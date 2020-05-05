@@ -2,8 +2,8 @@
 A tensorflow2.x implementation of CenterNet.
 
 ## Requirements:
-+ Python >= 3.6
-+ TensorFlow == 2.2.0rc3
++ Python >= 3.7
++ TensorFlow >= 2.2.0rc3
 + numpy
 + opencv-python
 
