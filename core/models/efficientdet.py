@@ -349,9 +349,10 @@ class TransposeLayer(tf.keras.layers.Layer):
 
 
 class EfficientDet(tf.keras.layers.Layer):
-    def __init__(self, head_conv, efficient_det):
+    def __init__(self, efficient_det):
         super(EfficientDet, self).__init__()
         self.heads = Config.heads
+        self.head_conv = Config.head_conv[efficient_det]
         self.efficient_net = get_efficient_net(width_coefficient=Config.get_width_coefficient(efficient_det),
                                                depth_coefficient=Config.get_depth_coefficient(efficient_det),
                                                dropout_rate=Config.get_dropout_rate(efficient_det))
@@ -359,9 +360,9 @@ class EfficientDet(tf.keras.layers.Layer):
         self.transpose = TransposeLayer(out_channels=Config.get_w_bifpn(efficient_det))
         for head in self.heads:
             classes = self.heads[head]
-            if head_conv > 0:
+            if self.head_conv > 0:
                 fc = tf.keras.Sequential([
-                    tf.keras.layers.Conv2D(filters=head_conv, kernel_size=(3, 3), strides=1,
+                    tf.keras.layers.Conv2D(filters=self.head_conv, kernel_size=(3, 3), strides=1,
                                            padding="same", use_bias=True),
                     tf.keras.layers.ReLU(),
                     tf.keras.layers.Conv2D(filters=classes, kernel_size=(1, 1), strides=1,
@@ -383,32 +384,32 @@ class EfficientDet(tf.keras.layers.Layer):
 
 
 def d0():
-    return EfficientDet(head_conv=Config.head_conv["efficientdet"], efficient_det="D0")
+    return EfficientDet("D0")
 
 
 def d1():
-    return EfficientDet(head_conv=Config.head_conv["efficientdet"], efficient_det="D1")
+    return EfficientDet("D1")
 
 
 def d2():
-    return EfficientDet(head_conv=Config.head_conv["efficientdet"], efficient_det="D2")
+    return EfficientDet("D2")
 
 
 def d3():
-    return EfficientDet(head_conv=Config.head_conv["efficientdet"], efficient_det="D3")
+    return EfficientDet("D3")
 
 
 def d4():
-    return EfficientDet(head_conv=Config.head_conv["efficientdet"], efficient_det="D4")
+    return EfficientDet("D4")
 
 
 def d5():
-    return EfficientDet(head_conv=Config.head_conv["efficientdet"], efficient_det="D5")
+    return EfficientDet("D5")
 
 
 def d6():
-    return EfficientDet(head_conv=Config.head_conv["efficientdet"], efficient_det="D6")
+    return EfficientDet("D6")
 
 
 def d7():
-    return EfficientDet(head_conv=Config.head_conv["efficientdet"], efficient_det="D7")
+    return EfficientDet("D7")

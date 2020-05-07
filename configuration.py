@@ -41,6 +41,10 @@ class Config:
     max_boxes_per_image = 50
 
     # network architecture
+
+    backbone_name = "D0"
+    # can be selected from: resnet_18, resnet_34, resnet_50, resnet_101, resnet_152, D0~D7
+
     downsampling_ratio = 8  # efficientdet: 8, others: 4
 
     # efficientdet
@@ -53,9 +57,10 @@ class Config:
     d_bifpn = {"D0": 2, "D1": 3, "D2": 4, "D3": 5, "D4": 6, "D5": 7, "D6": 8, "D7": 8}
 
     heads = {"heatmap": num_classes, "wh": 2, "reg": 2}
-    head_conv = {"no_conv_layer": 0, "resnets": 64, "dla": 256, "efficientdet": 64}
-    backbone_name = "D0"
-    # can be selected from: resnet_18, resnet_34, resnet_50, resnet_101, resnet_152, D0~D7
+    head_conv = {"no_conv_layer": 0, "resnets": 64, "dla": 256,
+                 "D0": w_bifpn["D0"], "D1": w_bifpn["D1"], "D2": w_bifpn["D2"], "D3": w_bifpn["D3"],
+                 "D4": w_bifpn["D4"], "D5": w_bifpn["D5"], "D6": w_bifpn["D6"], "D7": w_bifpn["D7"]}
+
 
     # loss
     hm_weight = 1.0
