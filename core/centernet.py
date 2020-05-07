@@ -49,11 +49,12 @@ class PostProcessing:
         clses = detections[:, 5]
         return bboxes, scores, clses
 
+
 class Decoder:
     def __init__(self, original_image_size):
         self.K = Config.max_boxes_per_image
         self.original_image_size = np.array(original_image_size, dtype=np.float32)
-        self.input_image_size = np.array(Config.image_size, dtype=np.float32)
+        self.input_image_size = np.array(Config.get_image_size(), dtype=np.float32)
         self.downsampling_ratio = Config.downsampling_ratio
         self.score_threshold = Config.score_threshold
 
