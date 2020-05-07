@@ -8,7 +8,7 @@ from utils.visualize import visualize_training_results
 
 
 def print_model_summary(network):
-    sample_inputs = tf.random.normal(shape=(Config.batch_size, Config.image_size[0], Config.image_size[1], Config.image_channels))
+    sample_inputs = tf.random.normal(shape=(Config.batch_size, Config.get_image_size()[0], Config.get_image_size()[1], Config.image_channels))
     sample_outputs = network(sample_inputs, training=True)
     network.summary()
 

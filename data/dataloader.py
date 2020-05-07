@@ -26,8 +26,8 @@ class DetectionDataset:
 
 class DataLoader:
 
-    input_image_height = Config.image_size[0]
-    input_image_width = Config.image_size[1]
+    input_image_height = Config.get_image_size()[0]
+    input_image_width = Config.get_image_size()[1]
     input_image_channels = Config.image_channels
 
     def __init__(self):
@@ -102,7 +102,7 @@ class DataLoader:
 class GT:
     def __init__(self, batch_labels):
         self.downsampling_ratio = Config.downsampling_ratio
-        self.features_shape = np.array(Config.image_size, dtype=np.int32) // self.downsampling_ratio
+        self.features_shape = np.array(Config.get_image_size(), dtype=np.int32) // self.downsampling_ratio
         self.batch_labels = batch_labels
         self.batch_size = batch_labels.shape[0]
 
