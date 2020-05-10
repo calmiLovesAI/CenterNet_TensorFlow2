@@ -20,7 +20,7 @@ class VOC:
         return len(self.label_names)
 
     def __getitem__(self, item):
-        label_file = self.label_names[item]
+        label_file = str(self.label_names[item])
         tree = ET.parse(label_file)
         image_name = tree.find("filename").text
         image_width = float(tree.find("size").find("width").text)
