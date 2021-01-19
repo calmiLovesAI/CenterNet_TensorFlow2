@@ -132,8 +132,8 @@ class GT:
             item[:4] = item[:4] / self.downsampling_ratio
             xmin, ymin, xmax, ymax, class_id = item
             class_id = class_id.astype(np.int32)
-            h, w = int(ymax - ymin), int(xmax - xmin)
-            radius = gaussian_radius((h, w))
+            h, w = ymax - ymin, xmax - xmin
+            radius = gaussian_radius((int(h), int(w)))
             radius = max(0, int(radius))
             ctr_x, ctr_y = (xmin + xmax) / 2, (ymin + ymax) / 2
             center_point = np.array([ctr_x, ctr_y], dtype=np.float32)
